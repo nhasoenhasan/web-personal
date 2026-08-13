@@ -32,13 +32,13 @@ function Loader({ onDone }) {
         fading ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
-      {/* Persentase besar di tengah */}
+      {/* Large percentage in the center */}
       <div className="font-display text-[96px] font-bold leading-none tracking-tight text-primary md:text-[140px]">
         {progress}
         <span className="text-secondary">%</span>
       </div>
 
-      {/* Progress bar tipis */}
+      {/* Thin progress bar */}
       <div className="absolute bottom-24 left-10 right-10 h-px max-w-[400px] md:left-auto md:right-auto">
         <div className="h-px w-full bg-surface-variant" />
         <div
@@ -47,7 +47,7 @@ function Loader({ onDone }) {
         />
       </div>
 
-      {/* Label kecil */}
+      {/* Small label */}
       <div className="absolute bottom-20 font-mono text-xs tracking-[0.2em] text-on-surface-variant uppercase">
         processing request
       </div>
