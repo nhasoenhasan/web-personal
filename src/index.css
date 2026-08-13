@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Colors — Deep Tech palette */
+  --color-surface: #f7f9fb;
+  --color-surface-lowest: #ffffff;
+  --color-surface-container: #eceef0;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-variant: #e0e3e5;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #45464d;
+  --color-outline: #76777d;
+  --color-outline-variant: #c6c6cd;
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-secondary: #00668a;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #40c2fd;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ambient-shadow {
+  transition: all 0.3s ease;
+}
+.ambient-shadow:hover {
+  box-shadow: 0px 10px 30px rgba(15, 23, 42, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth anchor scroll */
+html {
+  scroll-behavior: smooth;
+}
