@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -7,8 +7,10 @@ import Skills from './components/Skills'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import Loader from './components/Loader'
-import NotesList from './pages/NotesList'
-import NoteDetail from './pages/NoteDetail'
+
+// Lazy-load halaman notes agar bundle markdown terpisah dari home
+const NotesList = lazy(() => import('./pages/NotesList'))
+const NoteDetail = lazy(() => import('./pages/NoteDetail'))
 
 function Home() {
   return (
@@ -18,6 +20,14 @@ function Home() {
       <Skills />
       <Contact />
     </main>
+  )
+}
+
+function PageLoader() {
+  return (
+    <div className="flex min-h-[50vh] items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-surface-variant border-t-secondary" />
+    </div>
   )
 }
 
@@ -52,8 +62,22 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/notes" element={<NotesList />} />
-        <Route path="/notes/:slug" element={<NoteDetail />} />
+        <Route
+          path="/notes"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <NotesList />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/notes/:slug"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <NoteDetail />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<Home />} />
       </Routes>
       <Footer />

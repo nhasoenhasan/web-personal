@@ -28,7 +28,7 @@ function Loader({ onDone }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#f7f9fb] transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-surface transition-opacity duration-500 ${
         fading ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
