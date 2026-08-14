@@ -5,7 +5,7 @@ export const profile = {
   email: 'dev@nhasan.tech',
   website: 'https://nhasan.tech',
   linkedin: 'https://www.linkedin.com/in/nur-hasan-949658198/',
-  github: 'https://github.com/',
+  github: 'https://github.com/nhasoenhasan',
   summary:
     'Software Engineer with experience building and maintaining scalable mobile applications in the financial services and education sectors. Specialized in React Native, JavaScript/TypeScript, and REST API integration, with hands-on experience delivering production apps used by thousands of users. Strong focus on performance optimization, reliability, and clean architecture.',
 }
