@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import ThemeToggle from './ThemeToggle'
 
 const links = [
   { label: 'Home', href: '/#home', id: 'home' },
@@ -76,6 +77,7 @@ function Navbar() {
           >
             Resume
           </Link>
+          <ThemeToggle />
         </div>
 
         <button
@@ -136,6 +138,9 @@ function Navbar() {
             >
               Resume
             </Link>
+            <div className="mt-3 flex justify-end">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       )}

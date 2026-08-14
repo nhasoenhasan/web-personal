@@ -6,10 +6,10 @@ import { getNoteBySlug, formatDate } from '../lib/notes'
 import 'highlight.js/styles/github-dark.css'
 
 const categoryColors = {
-  Issues: 'bg-red-100 text-red-700',
-  'Tips & Tricks': 'bg-cyan-100 text-cyan-700',
-  'Career Lessons': 'bg-indigo-100 text-indigo-700',
-  Tutorials: 'bg-emerald-100 text-emerald-700',
+  Issues: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
+  'Tips & Tricks': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
+  'Career Lessons': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
+  Tutorials: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
 }
 
 function NoteDetail() {

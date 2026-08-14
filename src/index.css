@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-@theme {
+/* Dark mode via .dark class pada <html> (Tailwind v4) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Token warna sebagai CSS variable — utility mengacu ke sini,
+   sehingga override di .dark otomatis mengubah semua komponen */
+:root {
+  --surface: #f7f9fb;
+  --surface-container: #eceef0;
+  --surface-container-lowest: #ffffff;
+  --surface-variant: #e0e3e5;
+  --on-surface: #191c1e;
+  --on-surface-variant: #45464d;
+  --outline: #76777d;
+  --outline-variant: #c6c6cd;
+  --primary: #000000;
+  --on-primary: #ffffff;
+  --secondary: #00668a;
+}
+
+.dark {
+  --surface: #101214;
+  --surface-container: #1c1f23;
+  --surface-container-lowest: #15181b;
+  --surface-variant: #2a2e33;
+  --on-surface: #e6e8ea;
+  --on-surface-variant: #a6adb5;
+  --outline: #8b929a;
+  --outline-variant: #3a3f45;
+  --primary: #ffffff;
+  --on-primary: #000000;
+  --secondary: #40c2fd;
+}
+
+@theme inline {
   /* Fonts */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Colors — Deep Tech palette */
-  --color-surface: #f7f9fb;
-  --color-surface-lowest: #ffffff;
-  --color-surface-container: #eceef0;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-variant: #e0e3e5;
-  --color-on-surface: #191c1e;
-  --color-on-surface-variant: #45464d;
-  --color-outline: #76777d;
-  --color-outline-variant: #c6c6cd;
-  --color-primary: #000000;
-  --color-on-primary: #ffffff;
-  --color-secondary: #00668a;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #40c2fd;
+  /* Colors — mengacu ke CSS variable (ikut light/dark) */
+  --color-surface: var(--surface);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
 }
 
 body {
@@ -28,6 +58,14 @@ body {
   color: var(--color-on-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.dark body {
+  background-color: var(--surface);
+  color: var(--on-surface);
 }
 
 .ambient-shadow {

@@ -9,6 +9,16 @@
       content="Nur Hasan — Software Engineer. Building scalable mobile applications with clean architecture."
     />
     <title>Nur Hasan — Software Engineer</title>
+    <script>
+      // Set tema sebelum render untuk mencegah flash
+      ;(function () {
+        var stored = localStorage.getItem('theme')
+        var dark =
+          stored === 'dark' ||
+          (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) document.documentElement.classList.add('dark')
+      })()
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
