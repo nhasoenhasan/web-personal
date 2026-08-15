@@ -5,7 +5,7 @@ const modules = import.meta.glob('../../content/**/*.md', {
   eager: true,
 })
 
-function parseFrontmatter(raw) {
+export function parseFrontmatter(raw) {
   const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/)
   if (!match) return { meta: {}, body: raw }
 
@@ -16,7 +16,10 @@ function parseFrontmatter(raw) {
     const key = line.slice(0, idx).trim()
     const value = line.slice(idx + 1).trim().replace(/^["']|["']$/g, '')
     if (key === 'tags') {
-      meta[key] = value.replace(/^\[|\]$/g, '').split(',').map((t) => t.trim())
+      meta[key] = value
+        .replace(/^\[|\]$/g, '')
+        .split(',')
+        .map((t) => t.trim().replace(/^["']|["']$/g, ''))
     } else {
       meta[key] = value
     }
