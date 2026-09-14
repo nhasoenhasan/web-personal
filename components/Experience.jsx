@@ -1,6 +1,29 @@
 import { experience } from '../data/resume'
 import Reveal from './Reveal'
 
+function BulletList({ items, className = '' }) {
+  if (!items?.length) return null
+  return (
+    <ul className={`space-y-2 ${className}`}>
+      {items.map((item) => (
+        <li
+          key={item}
+          className="flex items-start gap-2 text-base text-on-surface-variant"
+        >
+          <svg
+            className="mt-1 h-4 w-4 shrink-0 text-secondary"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+          </svg>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 function Experience() {
   return (
     <section
@@ -29,42 +52,55 @@ function Experience() {
             className={idx === experience.length - 1 ? '' : 'mb-12'}
           >
             <div className="group relative">
-            {/* Timeline node */}
-            <div className="absolute left-0 top-3 z-10 h-5 w-5 rounded-full border-2 border-surface-variant bg-surface transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:shadow-[0_0_10px_rgba(0,102,138,0.3)]" />
+              {/* Timeline node */}
+              <div className="absolute left-0 top-3 z-10 h-5 w-5 rounded-full border-2 border-surface-variant bg-surface transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:shadow-[0_0_10px_rgba(0,102,138,0.3)]" />
 
-            <div className="ml-10 rounded-lg border border-surface-variant bg-surface-container-lowest p-8 ambient-shadow md:ml-14">
-              <div className="mb-2 flex flex-col md:flex-row md:items-start md:justify-between">
-                <div>
-                  <h3 className="font-display text-2xl font-medium text-primary">
-                    {job.company}
-                  </h3>
-                  <p className="mt-1 font-mono text-sm text-secondary">
-                    {job.role}
-                  </p>
+              <div className="ml-10 rounded-lg border border-surface-variant bg-surface-container-lowest p-8 ambient-shadow md:ml-14">
+                <div className="mb-2 flex flex-col md:flex-row md:items-start md:justify-between">
+                  <div>
+                    <h3 className="font-display text-2xl font-medium text-primary">
+                      {job.company}
+                    </h3>
+                    <p className="mt-1 font-mono text-sm text-secondary">
+                      {job.role}
+                    </p>
+                    {job.meta && (
+                      <p className="mt-1 font-mono text-xs text-on-surface-variant">
+                        {job.meta}
+                      </p>
+                    )}
+                  </div>
+                  <span className="mt-2 font-mono text-sm text-on-surface-variant md:mt-0">
+                    {job.period}
+                  </span>
                 </div>
-                <span className="mt-2 font-mono text-sm text-on-surface-variant md:mt-0">
-                  {job.period}
-                </span>
-              </div>
-              <ul className="mt-4 space-y-2">
-                {job.items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-base text-on-surface-variant"
+
+                {job.projects?.map((project) => (
+                  <div
+                    key={project.name}
+                    className="mt-8 border-l-2 border-secondary pl-4"
                   >
-                    <svg
-                      className="mt-1 h-4 w-4 shrink-0 text-secondary"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                    </svg>
-                    <span>{item}</span>
-                  </li>
+                    <p className="text-base text-primary">
+                      <span className="font-medium">{project.name}</span>
+                      {project.subtitle && (
+                        <span className="text-on-surface-variant">
+                          {' — '}
+                          {project.subtitle}
+                        </span>
+                      )}
+                    </p>
+                    {project.period && (
+                      <p className="mt-0.5 font-mono text-xs italic text-on-surface-variant">
+                        {project.period}
+                      </p>
+                    )}
+                    <BulletList items={project.items} className="mt-3" />
+                  </div>
                 ))}
-              </ul>
+
+                <BulletList items={job.items} className="mt-4" />
+              </div>
             </div>
-          </div>
           </Reveal>
         ))}
       </div>
