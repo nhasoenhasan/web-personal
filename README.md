@@ -1,16 +1,38 @@
-# React + Vite
+# web-personal (Next.js)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Versi Next.js App Router dari personal site + notes. Ini branch belajar
+(`nextjs`, worktree terpisah); versi produksi yang dipakai sekarang masih
+Vite SPA di branch `main`.
 
-Currently, two official plugins are available:
+**Baca [`MIGRATION-NOTES.md`](./MIGRATION-NOTES.md) dulu** — isinya tabel mapping
+file Vite→Next, urutan baca yang disarankan, konsep kunci, dan angka hasil build.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+pnpm dev       # http://localhost:3000
+pnpm test      # vitest (lib/notes.test.js)
+pnpm lint      # oxlint
+pnpm build     # static export → out/
+pnpm preview   # serve out/ lokal
+```
 
-## React Compiler
+## Struktur
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+app/
+  layout.jsx              metadata, next/font, script tema, Navbar/Footer
+  page.jsx                home (Server Component)
+  not-found.jsx           404
+  globals.css             Tailwind v4 + token warna (sama seperti versi Vite)
+  notes/
+    page.jsx              daftar notes (Server Component → kirim props)
+    [slug]/page.jsx       artikel: generateStaticParams + generateMetadata
+components/               Hero, Experience, Skills, Contact, Footer (server)
+                          Navbar, Reveal, Loader, ThemeToggle, NotesList (client)
+lib/
+  notes.js                server-only: baca content/**/*.md via node:fs
+  format.js               util murni, aman untuk client
+content/                  sumber artikel markdown (tidak berubah dari versi Vite)
+next.config.mjs           output: 'export', trailingSlash: true
+```
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Deploy: `.github/workflows/deploy.yml` — test → Snyk → build → rsync `out/` ke VPS.

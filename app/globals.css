@@ -34,10 +34,11 @@
 }
 
 @theme inline {
-  /* Fonts */
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Fonts — diisi oleh next/font (app/layout.jsx) sebagai CSS variable di <html>.
+     Versi Vite memakai nama font langsung + <link> ke Google Fonts. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
   /* Colors — mengacu ke CSS variable (ikut light/dark) */
   --color-surface: var(--surface);
@@ -92,6 +93,12 @@ body {
 /* Smooth anchor scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* #home / #experience / #skills / #contact tidak ketutup navbar fixed.
+   Tambahan Next.js: dulu hash diurus ScrollHandler, sekarang CSS. */
+[id] {
+  scroll-margin-top: 5rem;
 }
 
 /* Markdown content */

@@ -1,9 +1,10 @@
-import { Link, useParams, Navigate } from 'react-router-dom'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
-import { getNoteBySlug, formatDate } from '../lib/notes'
-import 'highlight.js/styles/github-dark.css'
+import remarkGfm from 'remark-gfm'
+import { formatDate } from '../../../lib/format'
+import { getNoteBySlug, notes } from '../../../lib/notes'
 
 const categoryColors = {
   Issues: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
@@ -12,16 +13,45 @@ const categoryColors = {
   Tutorials: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
 }
 
-function NoteDetail() {
-  const { slug } = useParams()
+// Static export: Next memanggil ini saat build dan membuat SATU HTML per slug
+// (out/notes/fix-memory-leak-ios/index.html). Di Vite, /notes/:slug tidak punya
+// HTML sendiri — semuanya dilayani satu index.html dan di-render di browser.
+export function generateStaticParams() {
+  return notes.map((note) => ({ slug: note.slug }))
+}
+
+// Ini yang tidak mungkin dilakukan Vite SPA: judul + deskripsi berbeda per
+// artikel, dirender ke <head> sejak HTML pertama. Preview share ke
+// LinkedIn/X/WhatsApp baru bisa benar dengan cara ini.
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  const note = getNoteBySlug(slug)
+  if (!note) return { title: 'Note not found — Nur Hasan' }
+
+  return {
+    title: `${note.title} — Nur Hasan`,
+    description: note.description,
+    openGraph: {
+      title: note.title,
+      description: note.description,
+      type: 'article',
+      publishedTime: note.date || undefined,
+      tags: note.tags,
+    },
+  }
+}
+
+export default async function NoteDetailPage({ params }) {
+  const { slug } = await params
   const note = getNoteBySlug(slug)
 
-  if (!note) return <Navigate to="/notes" replace />
+  // Di Vite: <Navigate to="/notes" replace />. Di Next: notFound() → app/not-found.jsx
+  if (!note) notFound()
 
   return (
     <section className="mx-auto max-w-3xl px-5 pb-32 pt-28 md:px-8">
       <Link
-        to="/notes"
+        href="/notes"
         className="inline-flex items-center gap-1 font-mono text-sm text-on-surface-variant transition-colors hover:text-primary"
       >
         ← Back to notes
@@ -55,6 +85,9 @@ function NoteDetail() {
         {note.title}
       </h1>
 
+      {/* react-markdown + highlight.js jalan di SERVER di sini. Di versi Vite,
+          keduanya masuk bundle client walaupun isi markdown sudah diketahui
+          saat build. */}
       <article className="prose-none mt-8 markdown-body">
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
           {note.body}
@@ -63,5 +96,3 @@ function NoteDetail() {
     </section>
   )
 }
-
-export default NoteDetail
