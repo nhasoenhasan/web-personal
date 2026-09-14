@@ -333,6 +333,11 @@ Yang kamu dapat murni SSG (pre-render saat build) — sudah cukup untuk kasus in
    (soft 404, HTTP 200). Sekarang `notFound()` → `app/not-found.jsx` → `out/404.html`.
    Kalau kamu ingin perilaku lama (semua URL balik ke Home), hapus `app/not-found.jsx`
    dan tambahkan `app/[...slug]/page.jsx`.
+
+   > ⚠️ **Tapi di produksi belum tentu:** nginx di VPS memakai fallback SPA
+   > (`try_files $uri $uri/ /index.html`), jadi URL ngawur tetap dijawab HTTP 200 berisi
+   > Home — `out/404.html` sudah ter-deploy tapi tidak pernah dipakai nginx. Detail dan
+   > cara memperbaikinya ada di §10.
 2. **URL punya trailing slash.** `trailingSlash: true` menghasilkan `/notes/slug/`.
    Pastikan nginx di VPS melayani `index.html` per direktori (`try_files $uri $uri/ ...`).
 3. **Intro loader digerbang `sessionStorage`** (§3.9), jadi reload kedua dalam satu sesi
@@ -406,7 +411,77 @@ diff ~/Workspaces/web-personal/src/pages/NoteDetail.jsx \
      ~/Workspaces/web-personal-next/app/notes/\[slug\]/page.jsx
 ```
 
-> Catatan git: perubahan migrasi ini masih ada di working tree (belum di-commit), jadi
-> `git diff main -- <path>` baru menampilkan file yang isinya diedit, bukan file baru.
-> Kalau ingin riwayat yang rapi (`git diff main..nextjs` menampilkan semua), commit dulu
-> branch `nextjs`.
+> Catatan git: migrasi ini sudah di-commit dan di-merge.
+> - `3d05e23` — migrasi (branch `nextjs`), ter-push ke `origin/nextjs`
+> - `d9ece04` — merge commit `--no-ff` di `main`, ter-push dan ter-deploy ke produksi
+>
+> `git diff 0f5eb3e..d9ece04` menampilkan seluruh migrasi sebagai satu diff
+> (`0f5eb3e` adalah commit `main` sebelum migrasi).
+
+---
+
+## 10. Produksi: apa yang sebenarnya terjadi setelah deploy
+
+Bagian ini hasil memeriksa VPS dan situs live setelah merge — bukan teori.
+
+### Topologi
+
+```
+browser → Cloudflare (proxy + TLS, IP 104.21.x / 172.67.x)
+        → VPS 43.128.113.94 :80 (nginx, tanpa blok 443 — TLS di Cloudflare)
+        → root /var/www/web-personal  ← isi folder out/ hasil `next build`
+```
+
+Config nginx-nya (`/etc/nginx/sites-available/web-personal`, read-only, tidak saya ubah):
+
+```nginx
+server_name nhasan.tech www.nhasan.tech;
+root /var/www/web-personal;
+index index.html;
+location / { try_files $uri $uri/ /index.html; }
+```
+
+Catatan: `coming-soon.conf` juga memakai `server_name nhasan.tech` tapi **tidak di-enable**,
+jadi tidak ada konflik. CI tetap memakai `rsync --delete`, dan itu terbukti bekerja —
+folder `assets/` sisa Vite sudah hilang dari VPS.
+
+### Hasil verifikasi di situs live
+
+| Cek | Hasil |
+|---|---|
+| `GET /` | 200, 49 KB HTML, ada `/_next/static`, konten hero sudah di HTML |
+| `GET /notes/` | 200, daftar 3 artikel (bukan Home) |
+| `GET /notes/<slug>/` | 200, `<title>` + `og:description` per artikel |
+| `GET /notes/<slug>` (tanpa slash) | 301 → versi ber-slash, lalu 200 |
+| 8 script `/_next/static/chunks/*.js` | semua 200 |
+| Request ke `gstatic.com` / `fonts.googleapis.com` | **0** (font self-hosted, terbukti di produksi) |
+| Console browser | 0 error (hydration mismatch sudah hilang) |
+| Klik nav "Skills" | URL jadi `#skills`, section berhenti di `top: 80px` (= `scroll-margin-top: 5rem`), scroll-spy aktif |
+
+### Dua hal yang masih bisa diperbaiki (belum saya kerjakan)
+
+1. **Soft 404 di produksi.** `GET /ini-ngawur-xyz/` → **HTTP 200** berisi Home, karena
+   `try_files` jatuh ke `/index.html`. `out/404.html` ada di server tapi tidak dipakai.
+   Karena **semua** route sekarang sudah punya HTML sendiri, fallback SPA itu sudah tidak
+   diperlukan. Perbaikannya:
+
+   ```nginx
+   location / { try_files $uri $uri/ =404; }
+   error_page 404 /404.html;
+   ```
+
+2. **Redirect 301 memakai URL absolut `http://`.** nginx mengirim
+   `Location: http://nhasan.tech/notes/slug/` (skema yang dilihat origin adalah http karena
+   TLS di Cloudflare). Sekarang aman karena Cloudflare mengarahkan balik ke https, tapi
+   lebih bersih dengan:
+
+   ```nginx
+   absolute_redirect off;   # → nginx mengirim path relatif
+   ```
+
+Keduanya perubahan infrastruktur produksi, jadi saya tidak menyentuhnya tanpa izinmu.
+Kalau bermasalah setelah deploy, rollback cepat:
+
+```bash
+git revert -m 1 d9ece04 && git push origin main   # CI akan deploy ulang versi Vite
+```
