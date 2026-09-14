@@ -1,13 +1,13 @@
 export const profile = {
   name: 'Nur Hasan',
-  title: 'Software Engineer',
+  title: 'Frontend Engineer',
   location: 'Indonesia · Batam',
   email: 'dev@nhasan.tech',
   website: 'https://nhasan.tech',
   linkedin: 'https://www.linkedin.com/in/nur-hasan-949658198/',
   github: 'https://github.com/nhasoenhasan',
   summary:
-    'Software Engineer with experience building and maintaining scalable mobile applications in the financial services and education sectors. Specialized in React Native, JavaScript/TypeScript, and REST API integration, with hands-on experience delivering production apps used by thousands of users. Strong focus on performance optimization, reliability, and clean architecture.',
+    'Frontend Engineer with 5+ years of experience building production web and mobile applications for financial services and education platforms serving 100K+ users. Strong in React, Next.js, TypeScript, and Tailwind CSS, with hands-on experience in modular frontend architecture, REST API integration, automated testing, and performance optimization. Focused on clean architecture, reliability, and shipping features end-to-end.',
 }
 
 export const experience = [
@@ -43,24 +43,32 @@ export const experience = [
 
 export const skills = [
   {
+    category: 'Frontend',
+    icon: 'web',
+    tags: [
+      'React.js',
+      'Next.js',
+      'TypeScript',
+      'JavaScript (ES6+)',
+      'Tailwind CSS',
+      'HTML5',
+      'CSS3',
+    ],
+  },
+  {
     category: 'Mobile',
     icon: 'smartphone',
     tags: ['React Native', 'iOS', 'Android', 'App Performance'],
   },
   {
-    category: 'Frontend',
-    icon: 'web',
-    tags: ['JavaScript (ES6+)', 'TypeScript', 'React.js', 'Next.js'],
-  },
-  {
-    category: 'Backend',
+    category: 'Backend & APIs',
     icon: 'dns',
-    tags: ['Node.js', 'ExpressJS', 'SQL Database'],
+    tags: ['Node.js', 'ExpressJS', 'REST API', 'SQL Database'],
   },
   {
     category: 'Tools',
     icon: 'build',
-    tags: ['Git', 'Firebase', 'Jira', 'Confluence', 'CI/CD', 'Jest'],
+    tags: ['Git', 'CI/CD', 'Jest', 'Snyk', 'Firebase', 'Jira', 'Confluence'],
   },
 ]
 
