@@ -1,7 +1,9 @@
+'use client'
+
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { categories, notes, formatDate } from '../lib/notes'
-import Reveal from '../components/Reveal'
+import { formatDate } from '../lib/format'
+import Reveal from './Reveal'
 
 const categoryColors = {
   Issues: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
@@ -10,7 +12,11 @@ const categoryColors = {
   Tutorials: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
 }
 
-function NotesList() {
+// Halaman ini tetap client component karena ada search + filter kategori.
+// Bedanya dengan versi Vite: daftar notes TIDAK di-import dari lib/notes
+// (file itu memakai node:fs dan tidak bisa jalan di browser). Data dikirim
+// sebagai prop dari Server Component app/notes/page.jsx.
+function NotesList({ notes, categories }) {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
 
@@ -27,7 +33,7 @@ function NotesList() {
         )
       })
       .sort((a, b) => (a.date < b.date ? 1 : -1))
-  }, [query, activeCategory])
+  }, [notes, query, activeCategory])
 
   return (
     <section className="mx-auto max-w-[1120px] px-5 pb-32 pt-28 md:px-8">
@@ -86,7 +92,7 @@ function NotesList() {
           {filtered.map((note, idx) => (
             <Reveal key={note.slug} delay={idx * 60}>
               <Link
-                to={`/notes/${note.slug}`}
+                href={`/notes/${note.slug}`}
                 className="group flex h-full flex-col rounded-lg border border-surface-variant bg-surface-container-lowest p-6 ambient-shadow"
               >
                 <div className="mb-3 flex items-center gap-2">

@@ -1,5 +1,8 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 
 const links = [
@@ -13,8 +16,8 @@ const links = [
 function Navbar() {
   const [active, setActive] = useState('home')
   const [menuOpen, setMenuOpen] = useState(false)
-  const location = useLocation()
-  const isNotesRoute = location.pathname.startsWith('/notes')
+  const pathname = usePathname()
+  const isNotesRoute = pathname.startsWith('/notes')
 
   useEffect(() => {
     // On the notes page, the notes menu item is active; no scroll spy needed
@@ -44,12 +47,12 @@ function Navbar() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [isNotesRoute, location.pathname])
+  }, [isNotesRoute, pathname])
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-5 md:px-8">
-        <Link to="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <span className="font-display text-lg font-bold tracking-tight text-primary">
             Nur Hasan
           </span>
@@ -64,7 +67,7 @@ function Navbar() {
             return (
               <Link
                 key={link.id}
-                to={link.href}
+                href={link.href}
                 className={`text-sm transition-colors ${cls}`}
               >
                 {link.label}
@@ -72,7 +75,7 @@ function Navbar() {
             )
           })}
           <Link
-            to="/#contact"
+            href="/#contact"
             className="rounded bg-primary px-4 py-2 font-mono text-xs font-medium text-on-primary transition-opacity hover:opacity-90"
           >
             Resume
@@ -123,7 +126,7 @@ function Navbar() {
               return (
                 <Link
                   key={link.id}
-                  to={link.href}
+                  href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className={`rounded px-3 py-3 text-sm transition-colors ${cls}`}
                 >
@@ -132,7 +135,7 @@ function Navbar() {
               )
             })}
             <Link
-              to="/#contact"
+              href="/#contact"
               onClick={() => setMenuOpen(false)}
               className="mt-2 rounded bg-primary px-3 py-3 text-center font-mono text-xs font-medium text-on-primary transition-opacity hover:opacity-90"
             >
