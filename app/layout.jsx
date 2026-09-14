@@ -24,14 +24,14 @@ const jetbrains = JetBrains_Mono({
 // Di Vite, metadata ini ada di index.html dan berlaku untuk SEMUA route.
 // Di Next, layout = default-nya, dan tiap page bisa menimpanya (lihat notes/[slug]).
 export const metadata = {
-  title: 'Nur Hasan — Software Engineer',
+  title: 'Nur Hasan — Frontend Engineer',
   description:
-    'Nur Hasan — Software Engineer. Building scalable mobile applications with clean architecture.',
+    'Nur Hasan — Frontend Engineer. Building production web and mobile applications with React, Next.js, TypeScript, and Tailwind CSS.',
   icons: { icon: '/favicon.svg?v=2' },
   openGraph: {
-    title: 'Nur Hasan — Software Engineer',
+    title: 'Nur Hasan — Frontend Engineer',
     description:
-      'Building scalable mobile applications with clean architecture.',
+      'Building production web and mobile applications with React, Next.js, TypeScript, and Tailwind CSS.',
     type: 'website',
   },
 }
