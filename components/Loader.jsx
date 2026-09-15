@@ -34,13 +34,13 @@ function Loader({ onDone }) {
         fading ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
-      {/* Large percentage in the center */}
-      <div className="font-display text-[96px] font-bold leading-none tracking-tight text-primary md:text-[140px]">
+      {/* Persentase besar di tengah — ukuran display dengan leading rapat */}
+      <div className="text-[clamp(4.5rem,17vw,8.5rem)] font-medium leading-[0.9] tracking-[-0.04em] tabular text-on-surface">
         {progress}
         <span className="text-secondary">%</span>
       </div>
 
-      {/* Thin progress bar */}
+      {/* Garis progres tipis */}
       <div className="absolute bottom-24 left-10 right-10 h-px max-w-[400px] md:left-auto md:right-auto">
         <div className="h-px w-full bg-surface-variant" />
         <div
@@ -49,8 +49,8 @@ function Loader({ onDone }) {
         />
       </div>
 
-      {/* Small label */}
-      <div className="absolute bottom-20 font-mono text-xs tracking-[0.2em] text-on-surface-variant uppercase">
+      {/* Label kecil */}
+      <div className="t-label absolute bottom-20 text-outline">
         processing request
       </div>
     </div>

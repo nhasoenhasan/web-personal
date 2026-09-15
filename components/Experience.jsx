@@ -4,20 +4,15 @@ import Reveal from './Reveal'
 function BulletList({ items, className = '' }) {
   if (!items?.length) return null
   return (
-    <ul className={`space-y-2 ${className}`}>
+    <ul className={`space-y-3 ${className}`}>
       {items.map((item) => (
-        <li
-          key={item}
-          className="flex items-start gap-2 text-base text-on-surface-variant"
-        >
-          <svg
-            className="mt-1 h-4 w-4 shrink-0 text-secondary"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-          </svg>
-          <span>{item}</span>
+        <li key={item} className="t-small flex gap-3 text-on-surface-variant">
+          <span aria-hidden className="shrink-0 text-outline">
+            —
+          </span>
+          {/* measure: batas 62ch. Tanpa ini, di kolom lebar barisnya
+              mencapai ~95 karakter — di atas batas nyaman baca (45–75). */}
+          <span className="measure">{item}</span>
         </li>
       ))}
     </ul>
@@ -28,59 +23,49 @@ function Experience() {
   return (
     <section
       id="experience"
-      className="mx-auto max-w-[1120px] border-t border-outline-variant/30 px-5 py-32 md:px-8"
+      className="rule mx-auto max-w-[1120px] border-t px-5 py-24 md:px-8 md:py-32"
     >
       <Reveal>
-        <div className="mb-8">
-          <h2 className="font-display text-2xl font-medium text-primary">
-            Professional Experience
-          </h2>
-          <p className="mt-1 text-base text-on-surface-variant">
-            Career history and key achievements.
-          </p>
+        <div className="flex items-start gap-4">
+          <span aria-hidden className="tick mt-2 h-7" />
+          <div>
+            <h2 className="t-h2 text-on-surface">Professional experience</h2>
+            <p className="t-small mt-2 text-on-surface-variant">
+              Career history and key achievements.
+            </p>
+          </div>
         </div>
       </Reveal>
 
-      <div className="relative pl-6 md:pl-10">
-        {/* Timeline line */}
-        <div className="absolute bottom-0 left-[10px] top-0 z-0 w-px bg-surface-variant" />
-
+      <div className="mt-16">
         {experience.map((job, idx) => (
-          <Reveal
-            key={job.company}
-            delay={idx * 100}
-            className={idx === experience.length - 1 ? '' : 'mb-12'}
-          >
-            <div className="group relative">
-              {/* Timeline node */}
-              <div className="absolute left-0 top-3 z-10 h-5 w-5 rounded-full border-2 border-surface-variant bg-surface transition-all duration-300 group-hover:border-secondary group-hover:bg-secondary group-hover:shadow-[0_0_10px_rgba(0,102,138,0.3)]" />
+          <Reveal key={job.company} delay={idx * 80}>
+            <article className="rule grid gap-8 border-t py-12 md:grid-cols-12 md:gap-10 md:py-14">
+              {/* Kolom kiri: identitas jabatan.
+                  sticky + self-start supaya identitas perusahaan tetap
+                  terbaca saat entri panjang (8 bullet) di-scroll — kalau
+                  tidak, kolom ini kosong di dua pertiga bawah tiap entri. */}
+              <header className="md:sticky md:top-24 md:col-span-4 md:self-start">
+                <h3 className="t-h3 text-on-surface">{job.company}</h3>
+                <p className="t-small mt-1.5 text-on-surface-variant">
+                  {job.role}
+                </p>
+                {job.meta && (
+                  <p className="t-meta mt-4 text-outline">{job.meta}</p>
+                )}
+                <p className="t-label tabular mt-3 text-outline">
+                  {job.period}
+                </p>
+              </header>
 
-              <div className="ml-10 rounded-lg border border-surface-variant bg-surface-container-lowest p-8 ambient-shadow md:ml-14">
-                <div className="mb-2 flex flex-col md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <h3 className="font-display text-2xl font-medium text-primary">
-                      {job.company}
-                    </h3>
-                    <p className="mt-1 font-mono text-sm text-secondary">
-                      {job.role}
-                    </p>
-                    {job.meta && (
-                      <p className="mt-1 font-mono text-xs text-on-surface-variant">
-                        {job.meta}
-                      </p>
-                    )}
-                  </div>
-                  <span className="mt-2 font-mono text-sm text-on-surface-variant md:mt-0">
-                    {job.period}
-                  </span>
-                </div>
-
+              {/* Kolom kanan: isi */}
+              <div className="md:col-span-8">
                 {job.projects?.map((project) => (
                   <div
                     key={project.name}
-                    className="mt-8 border-l-2 border-secondary pl-4"
+                    className="rule mb-8 border-l pl-5 last:mb-0"
                   >
-                    <p className="text-base text-primary">
+                    <p className="t-small text-on-surface">
                       <span className="font-medium">{project.name}</span>
                       {project.subtitle && (
                         <span className="text-on-surface-variant">
@@ -90,17 +75,17 @@ function Experience() {
                       )}
                     </p>
                     {project.period && (
-                      <p className="mt-0.5 font-mono text-xs italic text-on-surface-variant">
+                      <p className="t-label tabular mt-1.5 text-outline">
                         {project.period}
                       </p>
                     )}
-                    <BulletList items={project.items} className="mt-3" />
+                    <BulletList items={project.items} className="mt-4" />
                   </div>
                 ))}
 
-                <BulletList items={job.items} className="mt-4" />
+                <BulletList items={job.items} />
               </div>
-            </div>
+            </article>
           </Reveal>
         ))}
       </div>

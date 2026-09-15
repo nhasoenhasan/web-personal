@@ -5,17 +5,13 @@ import { useMemo, useState } from 'react'
 import { formatDate } from '../lib/format'
 import Reveal from './Reveal'
 
-const categoryColors = {
-  Issues: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
-  'Tips & Tricks': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
-  'Career Lessons': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
-  Tutorials: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-}
-
 // Halaman ini tetap client component karena ada search + filter kategori.
 // Bedanya dengan versi Vite: daftar notes TIDAK di-import dari lib/notes
 // (file itu memakai node:fs dan tidak bisa jalan di browser). Data dikirim
 // sebagai prop dari Server Component app/notes/page.jsx.
+//
+// Warna kategori (merah/cyan/indigo/emerald) dibuang: itu empat aksen
+// tambahan, sementara seluruh situs hanya memakai satu.
 function NotesList({ notes, categories }) {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
@@ -36,98 +32,86 @@ function NotesList({ notes, categories }) {
   }, [notes, query, activeCategory])
 
   return (
-    <section className="mx-auto max-w-[1120px] px-5 pb-32 pt-28 md:px-8">
+    <section className="mx-auto max-w-[1120px] px-5 pb-28 pt-32 md:px-8">
       <Reveal>
-        <div className="mb-8">
-          <p className="font-mono text-sm text-secondary">
-            &gt; knowledge_base/
-          </p>
-          <h1 className="mt-2 font-display text-4xl font-bold tracking-tight text-primary md:text-5xl">
-            Notes & Knowledge
-          </h1>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-on-surface-variant">
-            A collection of issues, tips & tricks, and lessons I've learned
-            throughout my career as a mobile developer. Written as personal
-            documentation in the spirit of Confluence.
-          </p>
-        </div>
+        <p className="t-label text-outline">Notes</p>
+        <h1 className="t-h1 mt-4 text-on-surface">Notes &amp; knowledge</h1>
+        <p className="t-body measure mt-5 text-on-surface-variant">
+          A collection of issues, tips &amp; tricks, and lessons I&apos;ve learned
+          throughout my career as a mobile developer. Written as personal
+          documentation in the spirit of Confluence.
+        </p>
       </Reveal>
 
-      {/* Search + category filter */}
+      {/* Pencarian + filter kategori */}
       <Reveal delay={100}>
-        <div className="mb-10">
+        <div className="mt-12">
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by title, description, or tag..."
-            className="w-full max-w-md border-b border-outline bg-transparent py-2 font-mono text-sm text-primary outline-none transition-colors placeholder:text-on-surface-variant/60 focus:border-secondary"
+            className="rule t-small w-full max-w-md border-b bg-transparent pb-2 text-on-surface outline-none transition-colors placeholder:text-outline focus:border-secondary"
           />
-          <div className="mt-4 flex flex-wrap gap-2">
-            {['All', ...categories].map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setActiveCategory(cat)}
-                className={`rounded-full px-4 py-1.5 font-mono text-xs transition-colors ${
-                  activeCategory === cat
-                    ? 'bg-primary text-on-primary'
-                    : 'bg-surface-container text-on-surface hover:bg-surface-variant'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+            {['All', ...categories].map((cat) => {
+              const isActive = activeCategory === cat
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={
+                    isActive
+                      ? 't-small text-on-surface underline decoration-1 underline-offset-[6px]'
+                      : 't-small text-on-surface-variant transition-colors hover:text-on-surface'
+                  }
+                >
+                  {cat}
+                </button>
+              )
+            })}
           </div>
         </div>
       </Reveal>
 
-      {/* Notes grid */}
-      {filtered.length === 0 ? (
-        <p className="font-mono text-sm text-on-surface-variant">
-          No matching notes found.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {filtered.map((note, idx) => (
-            <Reveal key={note.slug} delay={idx * 60}>
+      {/* Daftar notes — indeks editorial, bukan kartu */}
+      <div className="mt-14">
+        {filtered.length === 0 ? (
+          <p className="t-small text-on-surface-variant">
+            No matching notes found.
+          </p>
+        ) : (
+          filtered.map((note, idx) => (
+            <Reveal key={note.slug} delay={idx * 50}>
               <Link
                 href={`/notes/${note.slug}`}
-                className="group flex h-full flex-col rounded-lg border border-surface-variant bg-surface-container-lowest p-6 ambient-shadow"
+                className="rule group block border-t py-7"
               >
-                <div className="mb-3 flex items-center gap-2">
-                  <span
-                    className={`rounded-full px-3 py-1 font-mono text-xs ${
-                      categoryColors[note.category] || 'bg-surface-container text-on-surface'
-                    }`}
-                  >
-                    {note.category}
-                  </span>
-                  <span className="font-mono text-xs text-on-surface-variant">
+                <div className="flex items-baseline justify-between gap-6">
+                  <h2 className="t-h3 text-on-surface transition-colors group-hover:text-secondary">
+                    {note.title}
+                  </h2>
+                  <span className="t-label tabular shrink-0 text-outline">
                     {formatDate(note.date)}
                   </span>
                 </div>
-                <h2 className="font-display text-xl font-semibold text-primary transition-colors group-hover:text-secondary">
-                  {note.title}
-                </h2>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-on-surface-variant">
+                <p className="t-small measure mt-2 text-on-surface-variant">
                   {note.description}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                  <span className="t-label text-outline">{note.category}</span>
                   {note.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-surface-container px-2.5 py-0.5 font-mono text-xs text-on-surface"
-                    >
+                    <span key={tag} className="t-label text-outline">
                       #{tag}
                     </span>
                   ))}
                 </div>
               </Link>
             </Reveal>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </section>
   )
 }
