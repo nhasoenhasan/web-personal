@@ -1,6 +1,6 @@
 import 'highlight.js/styles/github-dark.css'
 import './globals.css'
-import { Hanken_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import Footer from '../components/Footer'
 import HashScroll from '../components/HashScroll'
@@ -9,12 +9,12 @@ import Navbar from '../components/Navbar'
 
 // Vite: 3 <link> ke fonts.googleapis.com di index.html (2 request tambahan + FOUT).
 // Next: font di-download saat build, di-self-host, dan di-inject sebagai CSS variable.
+//
+// Dua keluarga, bukan tiga. Hanken Grotesk dibuang: hierarki dibangun dari
+// ukuran + bobot + ruang, bukan dari menambah keluarga font. Inter dipakai
+// untuk display MAUPUN body (--font-display mengarah ke Inter), karena
+// watak neo-grotesque-nya justru yang diinginkan di ukuran besar.
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-const hanken = Hanken_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-hanken',
-  display: 'swap',
-})
 const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains',
@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${hanken.variable} ${jetbrains.variable}`}
+      className={`${inter.variable} ${jetbrains.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen">

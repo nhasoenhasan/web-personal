@@ -6,13 +6,6 @@ import remarkGfm from 'remark-gfm'
 import { formatDate } from '../../../lib/format'
 import { getNoteBySlug, notes } from '../../../lib/notes'
 
-const categoryColors = {
-  Issues: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
-  'Tips & Tricks': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
-  'Career Lessons': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
-  Tutorials: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-}
-
 // Static export: Next memanggil ini saat build dan membuat SATU HTML per slug
 // (out/notes/fix-memory-leak-ios/index.html). Di Vite, /notes/:slug tidak punya
 // HTML sendiri — semuanya dilayani satu index.html dan di-render di browser.
@@ -49,46 +42,32 @@ export default async function NoteDetailPage({ params }) {
   if (!note) notFound()
 
   return (
-    <section className="mx-auto max-w-3xl px-5 pb-32 pt-28 md:px-8">
+    <section className="mx-auto max-w-3xl px-5 pb-28 pt-32 md:px-8">
       <Link
         href="/notes"
-        className="inline-flex items-center gap-1 font-mono text-sm text-on-surface-variant transition-colors hover:text-primary"
+        className="t-small text-on-surface-variant transition-colors hover:text-on-surface"
       >
         ← Back to notes
       </Link>
 
-      <div className="mt-6 flex flex-wrap items-center gap-2">
-        <span
-          className={`rounded-full px-3 py-1 font-mono text-xs ${
-            categoryColors[note.category] || 'bg-surface-container text-on-surface'
-          }`}
-        >
-          {note.category}
-        </span>
-        <span className="font-mono text-xs text-on-surface-variant">
+      <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-1">
+        <span className="t-label text-outline">{note.category}</span>
+        <span className="t-label tabular text-outline">
           {formatDate(note.date)}
         </span>
-        <span className="font-mono text-xs text-on-surface-variant">·</span>
-        <div className="flex flex-wrap gap-1.5">
-          {note.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-surface-container px-2.5 py-0.5 font-mono text-xs text-on-surface"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
+        {note.tags.map((tag) => (
+          <span key={tag} className="t-label text-outline">
+            #{tag}
+          </span>
+        ))}
       </div>
 
-      <h1 className="mt-4 font-display text-3xl font-bold tracking-tight text-primary md:text-4xl">
-        {note.title}
-      </h1>
+      <h1 className="t-h1 mt-5 text-on-surface">{note.title}</h1>
 
       {/* react-markdown + highlight.js jalan di SERVER di sini. Di versi Vite,
           keduanya masuk bundle client walaupun isi markdown sudah diketahui
           saat build. */}
-      <article className="prose-none mt-8 markdown-body">
+      <article className="markdown-body mt-10">
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
           {note.body}
         </ReactMarkdown>

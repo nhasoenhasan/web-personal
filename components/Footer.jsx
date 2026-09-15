@@ -1,39 +1,37 @@
 import { profile } from '../data/resume'
 
+const links = [
+  { label: 'LinkedIn', href: profile.linkedin, external: true },
+  { label: 'GitHub', href: profile.github, external: true },
+  { label: 'Email', href: `mailto:${profile.email}` },
+]
+
 function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="w-full border-t border-outline-variant/30 bg-surface py-8">
-      <div className="mx-auto flex max-w-[1120px] flex-col items-center justify-between gap-4 px-5 md:flex-row md:px-8">
-        <div className="font-display text-lg font-bold text-primary">
-          {profile.name}
+    <footer className="rule w-full border-t py-10">
+      <div className="mx-auto flex max-w-[1120px] flex-col gap-6 px-5 md:flex-row md:items-center md:justify-between md:px-8">
+        <p className="t-small text-on-surface">{profile.name}</p>
+
+        <div className="flex flex-wrap gap-7">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              {...(link.external
+                ? { target: '_blank', rel: 'noreferrer' }
+                : {})}
+              className="t-small text-on-surface-variant transition-colors hover:text-on-surface"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
-        <div className="text-center text-xs text-on-surface-variant md:text-left">
-          © 2026 {profile.name}. Built with architectural precision.
-        </div>
-        <div className="flex gap-4 text-xs">
-          <a
-            className="text-on-surface-variant transition-all hover:text-primary hover:underline"
-            href={profile.linkedin}
-            target="_blank"
-            rel="noreferrer"
-          >
-            LinkedIn
-          </a>
-          <a
-            className="text-on-surface-variant transition-all hover:text-primary hover:underline"
-            href={profile.github}
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub
-          </a>
-          <a
-            className="text-on-surface-variant transition-all hover:text-primary hover:underline"
-            href={`mailto:${profile.email}`}
-          >
-            Email
-          </a>
-        </div>
+
+        <p className="t-label text-outline">
+          © {year} — Built with architectural precision
+        </p>
       </div>
     </footer>
   )

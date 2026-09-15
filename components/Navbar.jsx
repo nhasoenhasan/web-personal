@@ -14,17 +14,19 @@ const links = [
 ]
 
 function Navbar() {
-  const [active, setActive] = useState('home')
+  const [scrollActive, setScrollActive] = useState('home')
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
   const isNotesRoute = pathname.startsWith('/notes')
 
+  // Diturunkan saat render, bukan di-set lewat effect. Sebelumnya ada
+  // setActive('notes') di dalam useEffect — itu memicu render berantai
+  // (peringatan lint react/set-state-in-effect).
+  const active = isNotesRoute ? 'notes' : scrollActive
+
   useEffect(() => {
-    // On the notes page, the notes menu item is active; no scroll spy needed
-    if (isNotesRoute) {
-      setActive('notes')
-      return
-    }
+    // Di halaman /notes tidak ada scroll spy: nilainya sudah diturunkan di atas.
+    if (isNotesRoute) return
 
     const sections = links
       .filter((l) => !l.route)
@@ -37,11 +39,11 @@ function Navbar() {
       for (const section of sections) {
         if (section.offsetTop <= pos) current = section.id
       }
-      // If scrolled to the very bottom, activate the last section
+      // Kalau sudah di dasar halaman, aktifkan section terakhir
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 4) {
         current = sections[sections.length - 1]?.id ?? current
       }
-      setActive(current)
+      setScrollActive(current)
     }
 
     onScroll()
@@ -50,33 +52,29 @@ function Navbar() {
   }, [isNotesRoute, pathname])
 
   return (
-    <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md">
+    <nav className="rule fixed top-0 z-50 w-full border-b bg-surface/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1120px] items-center justify-between px-5 md:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-lg font-bold tracking-tight text-primary">
-            Nur Hasan
-          </span>
+        <Link href="/" className="t-small text-on-surface">
+          Nur Hasan
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
           {links.map((link) => {
             const isActive = active === link.id
+            // Aktif ditandai warna + garis bawah 1px. Bukan perubahan bobot
+            // font, karena itu menggeser lebar elemen di sekitarnya.
             const cls = isActive
-              ? 'font-semibold text-primary'
-              : 'text-on-surface-variant hover:text-primary'
+              ? 't-small text-on-surface underline decoration-1 underline-offset-[6px]'
+              : 't-small text-on-surface-variant transition-colors hover:text-on-surface'
             return (
-              <Link
-                key={link.id}
-                href={link.href}
-                className={`text-sm transition-colors ${cls}`}
-              >
+              <Link key={link.id} href={link.href} className={cls}>
                 {link.label}
               </Link>
             )
           })}
           <Link
             href="/#contact"
-            className="rounded bg-primary px-4 py-2 font-mono text-xs font-medium text-on-primary transition-opacity hover:opacity-90"
+            className="t-small bg-primary px-3.5 py-2 text-on-primary transition-opacity hover:opacity-85"
           >
             Resume
           </Link>
@@ -86,16 +84,16 @@ function Navbar() {
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
-          className="text-primary md:hidden"
+          className="text-on-surface md:hidden"
           aria-label="Menu"
           aria-expanded={menuOpen}
         >
           <svg
-            className="h-6 w-6"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth={2}
+            strokeWidth={1.5}
           >
             {menuOpen ? (
               <path
@@ -107,28 +105,28 @@ function Navbar() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
+                d="M4 7h16M4 12h16M4 17h16"
               />
             )}
           </svg>
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menu mobile */}
       {menuOpen && (
-        <div className="border-t border-outline-variant/30 bg-surface md:hidden">
-          <div className="flex flex-col px-5 py-4">
+        <div className="rule border-t bg-surface md:hidden">
+          <div className="flex flex-col px-5 py-3">
             {links.map((link) => {
               const isActive = active === link.id
               const cls = isActive
-                ? 'bg-surface-container font-semibold text-primary'
-                : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'
+                ? 't-small text-on-surface'
+                : 't-small text-on-surface-variant transition-colors hover:text-on-surface'
               return (
                 <Link
                   key={link.id}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`rounded px-3 py-3 text-sm transition-colors ${cls}`}
+                  className={`py-3 ${cls}`}
                 >
                   {link.label}
                 </Link>
@@ -137,7 +135,7 @@ function Navbar() {
             <Link
               href="/#contact"
               onClick={() => setMenuOpen(false)}
-              className="mt-2 rounded bg-primary px-3 py-3 text-center font-mono text-xs font-medium text-on-primary transition-opacity hover:opacity-90"
+              className="t-small mt-3 bg-primary px-3.5 py-3 text-center text-on-primary"
             >
               Resume
             </Link>

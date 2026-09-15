@@ -48,7 +48,7 @@ function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="flex h-8 w-8 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+      className="flex h-8 w-8 items-center justify-center text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
     >
