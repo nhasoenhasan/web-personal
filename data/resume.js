@@ -74,23 +74,36 @@ export const experience = [
           'Wrote unit tests with Jest for core application flows.',
         ],
         images: [
-          {
-            // Teacher app = the one built from scratch in this project.
-            // Screenshot taken from the Google Play listing (id.telkom.pijar.guru),
-            // cropped to the app screen. The name/avatar shown is the store
-            // listing's own demo data, not a real user.
-            id: 'pijar-2',
-            w: 644,
-            h: 1474,
-            caption: 'Teacher dashboard',
-            alt: 'Pijar Sekolah Guru app screen: teacher dashboard with class calendar, attendance cards and student attendance report.',
-          },
+          // Poster asli dari store listing aplikasi (bukan hasil crop) — satu set
+          // desain, rasio 2,17 sehingga tidak dipotong oleh kartu galeri.
+          // Nama siswa di poster pertama disensor pada 38,5-45,5% tinggi gambar.
           {
             id: 'pijar-1',
-            w: 513,
-            h: 1339,
-            caption: 'Guardian dashboard',
-            alt: 'Pijar Sekolah app screen: parent/guardian dashboard with exam summary and feature shortcuts. Student name redacted.',
+            w: 1080,
+            h: 2339,
+            caption: 'Parent dashboard',
+            alt: 'Pijar Sekolah store screenshot: parent/guardian dashboard with exam summary and feature shortcuts, beside an illustrated student. Student name redacted.',
+          },
+          {
+            id: 'pijar-2',
+            w: 1080,
+            h: 2339,
+            caption: 'Grades',
+            alt: 'Pijar Sekolah store screenshot: grades screen listing assignment and exam scores per subject, beside an illustrated student.',
+          },
+          {
+            id: 'pijar-3',
+            w: 1080,
+            h: 2339,
+            caption: 'Attendance',
+            alt: 'Pijar Sekolah store screenshot: student attendance screen with a presence/absence breakdown and monthly calendar.',
+          },
+          {
+            id: 'pijar-4',
+            w: 1080,
+            h: 2339,
+            caption: 'Schedule',
+            alt: 'Pijar Sekolah store screenshot: school schedule screen showing a monthly calendar of class activities.',
           },
         ],
       },
