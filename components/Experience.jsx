@@ -1,4 +1,5 @@
 import { experience } from '../data/resume'
+import ProjectGallery from './ProjectGallery'
 import Reveal from './Reveal'
 
 function BulletList({ items, className = '' }) {
@@ -80,10 +81,12 @@ function Experience() {
                       </p>
                     )}
                     <BulletList items={project.items} className="mt-4" />
+                    <ProjectGallery images={project.images} className="mt-6" />
                   </div>
                 ))}
 
                 <BulletList items={job.items} />
+                <ProjectGallery images={job.images} className="mt-10" />
               </div>
             </article>
           </Reveal>
