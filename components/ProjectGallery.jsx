@@ -53,11 +53,22 @@ export default function ProjectGallery({ images = [], className = '' }) {
 
   if (!images?.length) return null
 
+  // Kalau cuma ada 1 gambar (Pijar Sekolah), jangan pakai grid 4 kolom —
+  // satu thumbnail di grid 4 kolom terlihat kerdil dan setengah kolomnya kosong.
+  // Sekaligus tampilkan utuh sesuai rasio aslinya, jadi layarnya tidak
+  // dipotong oleh kontainer rasio tetap.
+  const isSingle = images.length === 1
   const current = openIndex === null ? null : images[openIndex]
 
   return (
     <div className={className}>
-      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <ul
+        className={
+          isSingle
+            ? 'max-w-[200px]'
+            : 'grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'
+        }
+      >
         {images.map((image, index) => (
           <li key={image.id}>
             <button
@@ -70,7 +81,9 @@ export default function ProjectGallery({ images = [], className = '' }) {
               className="group block w-full rounded-md text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
             >
               <span
-                className={`block overflow-hidden rounded-md border border-outline-variant/50 bg-surface-container ${ASPECT}`}
+                className={`block overflow-hidden rounded-md border border-outline-variant/50 bg-surface-container ${
+                  isSingle ? '' : ASPECT
+                }`}
               >
                 <Image
                   src={`/portfolio/${image.id}-sm.webp`}
@@ -78,7 +91,11 @@ export default function ProjectGallery({ images = [], className = '' }) {
                   width={THUMB_W}
                   height={Math.round((image.h * THUMB_W) / image.w)}
                   sizes="180px"
-                  className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                  className={
+                    isSingle
+                      ? 'h-auto w-full'
+                      : 'h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]'
+                  }
                 />
               </span>
               {/* min-h supaya caption 1 baris dan 2 baris tetap sejajar

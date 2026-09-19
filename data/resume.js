@@ -76,8 +76,8 @@ export const experience = [
         images: [
           {
             id: 'pijar-1',
-            w: 485,
-            h: 1049,
+            w: 513,
+            h: 1339,
             caption: 'Guardian dashboard',
             alt: 'Pijar Sekolah app screen: parent/guardian dashboard with exam summary and feature shortcuts. Student name redacted.',
           },
