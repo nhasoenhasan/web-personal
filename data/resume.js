@@ -32,14 +32,14 @@ export const experience = [
         w: 700,
         h: 1479,
         caption: 'Clinic search',
-        alt: 'AIA+ app screen: search results for general practitioner clinics shown on a map with a selected clinic card.',
+        alt: 'AIA+ app screen: clinic search results on a map. Clinic identity, address and location marker redacted.',
       },
       {
         id: 'aia-2',
         w: 559,
         h: 1470,
         caption: 'Clinic details',
-        alt: 'AIA+ app screen: clinic details with operating hours, contact information and doctor list. Doctor names redacted.',
+        alt: 'AIA+ app screen: clinic details with operating hours. Clinic identity, phone number, address and doctor names redacted.',
       },
       {
         id: 'aia-3',
