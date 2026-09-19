@@ -26,6 +26,36 @@ export const experience = [
       'Established frontend engineering standards covering component reusability, TypeScript-driven development, modular architecture, automated testing, and peer code reviews.',
       'Collaborated across product, design, QA, backend, DevOps, security, and business teams across multiple countries to translate business requirements and UI/UX specifications into scalable frontend solutions.',
     ],
+    images: [
+      {
+        id: 'aia-1',
+        w: 700,
+        h: 1479,
+        caption: 'Clinic search',
+        alt: 'AIA+ app screen: clinic search results on a map. Clinic identity, address and location marker redacted.',
+      },
+      {
+        id: 'aia-2',
+        w: 559,
+        h: 1470,
+        caption: 'Clinic details',
+        alt: 'AIA+ app screen: clinic details with operating hours. Clinic identity, phone number, address and doctor names redacted.',
+      },
+      {
+        id: 'aia-3',
+        w: 1080,
+        h: 2347,
+        caption: 'Vitality & Health360',
+        alt: 'AIA+ store screenshot: AIA Vitality and Health360 dashboard with points and weekly fitness challenge.',
+      },
+      {
+        id: 'aia-4',
+        w: 1080,
+        h: 2347,
+        caption: 'Rewards',
+        alt: 'AIA+ store screenshot: rewards screen with Delight points, AIA Altitude tier and Plan360.',
+      },
+    ],
   },
   {
     company: 'Telkom Indonesia',
@@ -43,6 +73,39 @@ export const experience = [
           'Integrated Firebase Crashlytics for crash monitoring and production issue detection, Firebase Cloud Messaging for push notifications, and Firebase App Distribution to streamline internal and QA build delivery.',
           'Wrote unit tests with Jest for core application flows.',
         ],
+        images: [
+          // Poster asli dari store listing aplikasi (bukan hasil crop) — satu set
+          // desain, rasio 2,17 sehingga tidak dipotong oleh kartu galeri.
+          // Nama siswa di poster pertama disensor pada 38,5-45,5% tinggi gambar.
+          {
+            id: 'pijar-1',
+            w: 1080,
+            h: 2339,
+            caption: 'Parent dashboard',
+            alt: 'Pijar Sekolah store screenshot: parent/guardian dashboard with exam summary and feature shortcuts, beside an illustrated student. Student name redacted.',
+          },
+          {
+            id: 'pijar-2',
+            w: 1080,
+            h: 2339,
+            caption: 'Grades',
+            alt: 'Pijar Sekolah store screenshot: grades screen listing assignment and exam scores per subject, beside an illustrated student.',
+          },
+          {
+            id: 'pijar-3',
+            w: 1080,
+            h: 2339,
+            caption: 'Attendance',
+            alt: 'Pijar Sekolah store screenshot: student attendance screen with a presence/absence breakdown and monthly calendar.',
+          },
+          {
+            id: 'pijar-4',
+            w: 1080,
+            h: 2339,
+            caption: 'Schedule',
+            alt: 'Pijar Sekolah store screenshot: school schedule screen showing a monthly calendar of class activities.',
+          },
+        ],
       },
       {
         name: 'COSMIC',
@@ -52,6 +115,40 @@ export const experience = [
           'Continued development of the COSMIC mobile application using React Native and Redux, building on an existing codebase and carrying mobile feature development through to production release, for the Ministry of State-Owned Enterprises (Kementerian BUMN) across all Indonesian state-owned enterprises.',
           'Implemented mobile frontend features spanning health-protocol compliance reporting, monitoring of pandemic-affected employees, and employee vaccination status tracking, feeding centralized reporting used for cross-enterprise decision-making.',
           'Delivered within a fully distributed, cross-SOE engineering team ("Cosmic Team") using Scrum and remote-first collaboration across the full 18-month engagement.',
+        ],
+        images: [
+          // Poster asli dari store/company deck (bukan crop layar) — satu set desain,
+          // rasio 2,16 sehingga tidak dipotong kartu galeri.
+          // Poster 1: nama pegawai (PIC + Field Officer) dan nama cabang disensor
+          // pada 40,5-49% tinggi gambar (terukur, lalu dibaca ulang di zoom 2x).
+          {
+            id: 'cosmic-1',
+            w: 1080,
+            h: 2337,
+            caption: 'Perimeter checklist',
+            alt: 'COSMIC store screenshot: protocol verification checklist for an office floor. Branch and employee names redacted.',
+          },
+          {
+            id: 'cosmic-2',
+            w: 1080,
+            h: 2337,
+            caption: 'Protocol submission',
+            alt: 'COSMIC store screenshot: Covidsafe protocol compliance progress with submitted and pending documents.',
+          },
+          {
+            id: 'cosmic-3',
+            w: 1080,
+            h: 2336,
+            caption: 'SOE leaderboard',
+            alt: 'COSMIC store screenshot: health protocol implementation leaderboard ranking state-owned enterprises.',
+          },
+          {
+            id: 'cosmic-4',
+            w: 1080,
+            h: 2337,
+            caption: 'Perimeter registry',
+            alt: 'COSMIC store screenshot: registry of monitored perimeters grouped by region.',
+          },
         ],
       },
     ],
