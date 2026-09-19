@@ -53,22 +53,23 @@ export default function ProjectGallery({ images = [], className = '' }) {
 
   if (!images?.length) return null
 
-  // Kalau cuma ada 1 gambar (Pijar Sekolah), jangan pakai grid 4 kolom —
-  // satu thumbnail di grid 4 kolom terlihat kerdil dan setengah kolomnya kosong.
-  // Sekaligus tampilkan utuh sesuai rasio aslinya, jadi layarnya tidak
-  // dipotong oleh kontainer rasio tetap.
+  // Kalau cuma ada 1 gambar (mis. sebuah project cuma punya satu screenshot),
+  // jangan pakai grid 4 kolom — satu thumbnail di grid 4 kolom terlihat kerdil
+  // dan tiga perempat barisnya kosong. Grid mengikuti jumlah gambar:
+  // 1 → satu kolom (rasio asli, tidak dipotong), 2 → dua kolom, 3 → tiga, 4+ → empat.
   const isSingle = images.length === 1
+  const gridClass = isSingle
+    ? 'max-w-[200px]'
+    : images.length === 2
+      ? 'grid max-w-[420px] grid-cols-2 gap-4'
+      : images.length === 3
+        ? 'grid grid-cols-2 gap-4 sm:grid-cols-3'
+        : 'grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'
   const current = openIndex === null ? null : images[openIndex]
 
   return (
     <div className={className}>
-      <ul
-        className={
-          isSingle
-            ? 'max-w-[200px]'
-            : 'grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4'
-        }
-      >
+      <ul className={gridClass}>
         {images.map((image, index) => (
           <li key={image.id}>
             <button

@@ -75,6 +75,17 @@ export const experience = [
         ],
         images: [
           {
+            // Teacher app = the one built from scratch in this project.
+            // Screenshot taken from the Google Play listing (id.telkom.pijar.guru),
+            // cropped to the app screen. The name/avatar shown is the store
+            // listing's own demo data, not a real user.
+            id: 'pijar-2',
+            w: 644,
+            h: 1474,
+            caption: 'Teacher dashboard',
+            alt: 'Pijar Sekolah Guru app screen: teacher dashboard with class calendar, attendance cards and student attendance report.',
+          },
+          {
             id: 'pijar-1',
             w: 513,
             h: 1339,
